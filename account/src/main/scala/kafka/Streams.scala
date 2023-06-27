@@ -1,43 +1,39 @@
 package kafka
 
 import akka.actor.ActorSystem
-
-import akka.kafka.{ConsumerSettings, ProducerSettings, Subscriptions}
-import akka.kafka.scaladsl.{Consumer, Producer}
 import akka.stream.scaladsl.{Flow, Sink, Source}
-import org.apache.kafka.clients.consumer.ConsumerConfig
-import org.apache.kafka.clients.producer.ProducerRecord
-import org.apache.kafka.common.serialization.{ByteArrayDeserializer, StringDeserializer, StringSerializer}
+import repository.Repository
+import io.circe.generic.auto._
+import model.{AccountUpdate, AccountUpdated}
 
 import scala.concurrent.ExecutionContext
 
-class Streams(implicit val system: ActorSystem, executionContext: ExecutionContext) {
+/**
+ * Represents a class that processes streams of Kafka messages using Akka Streams.
+ *
+ * @param repository       The repository used for updating accounts.
+ * @param system           The actor system used for Akka operations.
+ * @param executionContext The execution context used for asynchronous operations.
+ */
+class Streams(repository: Repository)(implicit val system: ActorSystem, executionContext: ExecutionContext) extends WithKafka {
+  /**
+   * Consumes messages of type AccountUpdate from a Kafka topic, updates the repository asynchronously, and produces AccountUpdated messages to a Kafka topic.
+   */
+  kafkaSource[AccountUpdate]
+    .mapAsync(1)(command => repository.update(command.value))
+    .map(account => AccountUpdated(account.id, account.amount))
+    .to(kafkaSink)
+    .run()
 
-  val consumerConfig = system.settings.config.getConfig("akka.kafka.consumer")
-  val consumerSettings = ConsumerSettings(consumerConfig, new StringDeserializer, new StringDeserializer)
+  /**
+   * Consumes messages of type AccountUpdated from a Kafka topic and prints them to the console.
+   */
+  kafkaSource[AccountUpdated]
+    .map { event =>
+      println(s"Получено событие: $event")
+      event
+    }
+    .to(Sink.ignore)
+    .run()
 
-  val producerConfig = system.settings.config.getConfig("akka.kafka.producer")
-  val producerSettings = ProducerSettings(producerConfig, new StringSerializer, new StringSerializer)
-
-  //            .withProperty(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest")
-
-  private val topic = "akka-kafka-topic"
-  val kafkaSource = Consumer.committableSource(consumerSettings, Subscriptions.topics(topic))
-    .map(message => message.record.value())
-
-  def printFlow[T] = Flow[T].map { x =>
-    println(s"flow: ${x}")
-    x
-  }
-
-  val kafkaGraph = kafkaSource.via(printFlow).to(Sink.ignore)
-  kafkaGraph.run()
-
-
-  val produceGraph = Source(1 to 100)
-    .map(_.toString)
-    .map(value => new ProducerRecord[String, String](topic, value))
-    .to(Producer.plainSink(producerSettings))
-
-  produceGraph.run()
 }
