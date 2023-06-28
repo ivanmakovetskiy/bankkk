@@ -20,6 +20,33 @@
           <set>
             <option value="$PROJECT_DIR$/account" />
             <option value="$PROJECT_DIR$/account/project" />
+            <option value="$PROJECT_DIR$/common" />
+            <option value="$PROJECT_DIR$/common/project" />
+          </set>
+        </option>
+        <option name="sbtVersion" value="1.9.1" />
+      </SbtProjectSettings>
+      <SbtProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/common" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/common" />
+            <option value="$PROJECT_DIR$/common/project" />
+          </set>
+        </option>
+        <option name="sbtVersion" value="1.9.1" />
+      </SbtProjectSettings>
+      <SbtProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/common/operation" />
+      </SbtProjectSettings>
+      <SbtProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/operation" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/common" />
+            <option value="$PROJECT_DIR$/common/project" />
+            <option value="$PROJECT_DIR$/operation" />
+            <option value="$PROJECT_DIR$/operation/project" />
           </set>
         </option>
         <option name="sbtVersion" value="1.9.1" />

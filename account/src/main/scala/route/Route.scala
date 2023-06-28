@@ -1,20 +1,42 @@
 package route
+/**
 
-/*
-the code defines an Akka HTTP route that matches the "/hello"
-path and the GET HTTP method. When a request is made to this route,
- it responds with a complete response containing the string "ok".
- This example showcases a simple HTTP route using Akka HTTP's directives and demonstrates
- how to handle GET requests with a specific path.
+The route package contains classes related to defining HTTP routes for the application.
  */
 import akka.http.scaladsl.model.StatusCodes
 import akka.http.scaladsl.server.Directives._
+import de.heikoseeberger.akkahttpcirce.FailFastCirceSupport
+import io.circe.generic.auto._
+import repository.Repository
+
 import scala.concurrent.ExecutionContext
 
-class Route(implicit ec: ExecutionContext) {
-
+/**
+ * The Route class defines the HTTP routes for the application.
+ *
+ * @param repository The repository for account data.
+ * @param ec The implicit execution context.
+ */
+class Route(repository: Repository)(implicit ec: ExecutionContext) extends FailFastCirceSupport {
+  /**
+   * Defines the routes for the application.
+   */
   def routes =
     (path("hello") & get) {
       complete("ok")
-    }
+    } ~
+      (path("create") & post) {
+        val createdAccount = repository.createAccount()
+        complete(StatusCodes.Created, createdAccount)
+      } ~
+      (path("info" / IntNumber) { accountId =>
+        complete {
+          repository.getAccount(accountId) match {
+            case Some(account) => account
+            case None => StatusCodes.NotFound -> "Аккаунт не найден"
+          }
+        }
+      })
+
 }
+

@@ -3,9 +3,13 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/account.iml" filepath="$PROJECT_DIR$/.idea/modules/account.iml" />
-      <module fileurl="file://$PROJECT_DIR$/account/.idea/modules/account-build.iml" filepath="$PROJECT_DIR$/account/.idea/modules/account-build.iml" />
+      <module fileurl="file://$PROJECT_DIR$/account/.idea/modules/account-build.iml" filepath="$PROJECT_DIR$/account/.idea/modules/account-build.iml" group="sbt-build-modules" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/common.iml" filepath="$PROJECT_DIR$/.idea/modules/common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/common/.idea/modules/common-build.iml" filepath="$PROJECT_DIR$/common/.idea/modules/common-build.iml" group="sbt-build-modules" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/online-banking.iml" filepath="$PROJECT_DIR$/.idea/modules/online-banking.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/online-banking-build.iml" filepath="$PROJECT_DIR$/.idea/modules/online-banking-build.iml" />
+      <module fileurl="file://$PROJECT_DIR$/operation/.idea/modules/operation.iml" filepath="$PROJECT_DIR$/operation/.idea/modules/operation.iml" />
+      <module fileurl="file://$PROJECT_DIR$/operation/.idea/modules/operation-build.iml" filepath="$PROJECT_DIR$/operation/.idea/modules/operation-build.iml" group="sbt-build-modules" />
     </modules>
   </component>
 </project>

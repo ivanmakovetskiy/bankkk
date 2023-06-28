@@ -1,24 +1,31 @@
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import com.typesafe.config.ConfigFactory
-import route.Route
-import kafka.Streams
+import kafka.AccountStreams
 import repository.Repository
-import model.AccountUpdate
+import route._
+/**
 
-object AccountApp extends App {
+The AccountApp object represents the entry point of the application.
+ */
+
+object AccountApp extends App  {
+  // Create an ActorSystem
   implicit val system: ActorSystem = ActorSystem("App")
   implicit val ec = system.dispatcher
 
-  val port = ConfigFactory.load().getInt("port")
+  // Load configuration settings
+  private val port = ConfigFactory.load().getInt("port")
   val accountId = ConfigFactory.load().getInt("account.id")
   val defAmount = ConfigFactory.load().getInt("account.amount")
 
+  // Create repository and streams instances
   private val repository = new Repository(accountId, defAmount)
-  private val streams = new Streams(repository)
+  private val streams = new AccountStreams(repository)
 
-  streams.produceCommand(AccountUpdate(100))
+  // Create route instance
+  private val route = new Route(repository)
 
-  private val route = new Route()
+  // Start the HTTP server
   Http().newServerAt("0.0.0.0", port).bind(route.routes)
 }
