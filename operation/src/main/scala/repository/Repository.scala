@@ -1,8 +1,9 @@
 package repository
 
 import commonkafka.TopicName
+import commonmodel.{Account, AccountUpdate}
 import kafka.OperationStreams
-import model.{Account, AccountUpdate, TransferStart}
+import model.TransferStart
 import io.circe.generic.auto._
 
 /**

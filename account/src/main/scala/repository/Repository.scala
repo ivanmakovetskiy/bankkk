@@ -2,7 +2,7 @@ package repository
 /**
 The repository package contains classes related to account data management.
  */
-import model.Account
+import commonmodel.Account
 import com.typesafe.config.ConfigFactory
 import scala.concurrent.Future
 

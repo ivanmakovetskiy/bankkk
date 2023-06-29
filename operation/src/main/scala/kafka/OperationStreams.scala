@@ -4,7 +4,7 @@ import akka.actor.ActorSystem
 import akka.stream.scaladsl.Sink
 import io.circe.generic.auto._
 import commonkafka.WithKafka
-import model.{AccountUpdate, AccountUpdated}
+import commonmodel.{AccountUpdate, AccountUpdated}
 import scala.concurrent.{ExecutionContext, Future}
 
 class OperationStreams()(implicit val system: ActorSystem, executionContext: ExecutionContext)

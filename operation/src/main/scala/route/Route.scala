@@ -5,8 +5,9 @@ import akka.http.scaladsl.server.Directives._
 import io.circe.generic.auto._
 import de.heikoseeberger.akkahttpcirce.FailFastCirceSupport
 import commonkafka.TopicName
+import commonmodel.AccountUpdate
 import kafka.OperationStreams
-import model.{AccountUpdate, TransferStart}
+import model.TransferStart
 import repository.Repository
 
 import scala.concurrent.ExecutionContext

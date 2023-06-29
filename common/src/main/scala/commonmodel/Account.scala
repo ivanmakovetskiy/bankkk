@@ -1,4 +1,5 @@
-package model
+package commonmodel
+
 /**
 
 The Account case class represents an account with an ID and an amount.
